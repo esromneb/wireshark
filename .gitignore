@@ -8,6 +8,8 @@
 #   https://help.github.com/articles/ignoring-files
 #
 
+/build
+
 # Compiled or generated source #
 ################################
 *.dll
