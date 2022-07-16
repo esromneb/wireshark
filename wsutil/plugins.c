@@ -219,6 +219,8 @@ plugins_init(plugin_type_e type)
         return NULL; /* nothing to do */
 
     GHashTable *plugins_module = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, free_plugin);
+    
+    // raise(SIGTRAP);
 
     /*
      * Scan the global plugin directory.
@@ -238,6 +240,61 @@ plugins_init(plugin_type_e type)
     }
 
     plugins_module_list = g_slist_prepend(plugins_module_list, plugins_module);
+
+    int i =0;
+    GHashTableIter iter;
+    gpointer value;
+    for (GSList *l = plugins_module_list; l != NULL; l = l->next) {
+        printf("i = %d\n", i);
+        g_hash_table_iter_init (&iter, (GHashTable *)l->data);
+        while (g_hash_table_iter_next (&iter, NULL, &value)) {
+            plugin *plug = (plugin *)value;
+            printf("  j %s\n", g_module_name(plug->handle) );
+        //     g_ptr_array_add(plugins_array, value);
+        }
+        i++;
+    }
+
+//    i = 0
+//      j /usr/local/lib/wireshark/plugins/3.2/wiretap/usbdump.so
+//    i = 0
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimax.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/gryphon.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/profinet.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/unistim.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/irda.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimaxmacphy.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/ethercat.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/opcua.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/transum.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/foo.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/mate.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/stats_tree.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimaxasncp.so
+//    i = 1
+//      j /usr/local/lib/wireshark/plugins/3.2/wiretap/usbdump.so
+//    i = 0
+//      j /usr/local/lib/wireshark/plugins/3.2/codecs/g711.so
+//      j /usr/local/lib/wireshark/plugins/3.2/codecs/g726.so
+//      j /usr/local/lib/wireshark/plugins/3.2/codecs/sbc.so
+//      j /usr/local/lib/wireshark/plugins/3.2/codecs/g722.so
+//      j /usr/local/lib/wireshark/plugins/3.2/codecs/l16mono.so
+//    i = 1
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimax.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/gryphon.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/profinet.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/unistim.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/irda.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimaxmacphy.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/ethercat.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/opcua.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/transum.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/foo.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/mate.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/stats_tree.so
+//      j /usr/local/lib/wireshark/plugins/3.2/epan/wimaxasncp.so
+//    i = 2
+//      j /usr/local/lib/wireshark/plugins/3.2/wiretap/usbdump.so
 
     return plugins_module;
 }
