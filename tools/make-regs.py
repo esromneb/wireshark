@@ -40,6 +40,10 @@ def scan_files(infiles, regs):
                 array.extend(matches)
 
 def make_dissectors(outfile, infiles):
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     protos = []
     protos_regex = r"void\s+(proto_register_[\w]+)\s*\(\s*void\s*\)\s*{"
     handoffs = []
@@ -110,6 +114,14 @@ def print_usage():
 if __name__ == "__main__":
     if len(sys.argv) < 4:
         print_usage()
+
+    # print("---------------------------------------------------------")
+    # print("---------------------------------------------------------")
+    print("---------------------------------------------------------")
+    print(sys.argv)
+    print("---------------------------------------------------------")
+    # print("---------------------------------------------------------")
+    # print("---------------------------------------------------------")
 
     mode = sys.argv[1]
     outfile = sys.argv[2]
