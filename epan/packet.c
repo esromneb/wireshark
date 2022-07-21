@@ -3033,6 +3033,7 @@ get_dissector_names(void)
 dissector_handle_t
 find_dissector(const char *name)
 {
+    printf("find_dissector() %s\n", name);
 	return (dissector_handle_t)g_hash_table_lookup(registered_dissectors, name);
 }
 
