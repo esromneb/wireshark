@@ -1,0 +1,19 @@
+name: Wireshark sharkd
+
+on:
+  push:
+
+jobs:
+  build:
+    timeout-minutes: 30
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build wireshark inside docker
+      run: make build
+
+    - name: Run my custom tests
+      run: make test
