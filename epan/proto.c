@@ -1724,7 +1724,7 @@ get_stringz_value(wmem_allocator_t *scope, proto_tree *tree, tvbuff_t *tvb,
         /* This can throw an exception */
         value = tvb_get_stringz_enc(scope, tvb, start, &length, encoding);
     } else if (length == 0) {
-        value = "[Empty]";
+        value = (const unsigned char*)"[Empty]";
     } else {
         /* In this case, length signifies the length of the string.
          *
@@ -2735,7 +2735,7 @@ proto_tree_new_item(field_info *new_fi, proto_tree *tree,
             break;
 
         case FT_STRING:
-            stringval = get_string_value(wmem_packet_scope(),
+            stringval = (const char *)get_string_value(wmem_packet_scope(),
                 tvb, start, length, &length, encoding);
             proto_tree_set_string(new_fi, stringval);
 
@@ -2752,7 +2752,7 @@ proto_tree_new_item(field_info *new_fi, proto_tree *tree,
             break;
 
         case FT_STRINGZ:
-            stringval = get_stringz_value(wmem_packet_scope(),
+            stringval = (const char *)get_stringz_value(wmem_packet_scope(),
                 tree, tvb, start, length, &length, encoding);
             proto_tree_set_string(new_fi, stringval);
 
@@ -2783,7 +2783,7 @@ proto_tree_new_item(field_info *new_fi, proto_tree *tree,
              */
             if (encoding == TRUE)
                 encoding = ENC_ASCII|ENC_LITTLE_ENDIAN;
-            stringval = get_uint_string_value(wmem_packet_scope(),
+            stringval = (const char *)get_uint_string_value(wmem_packet_scope(),
                 tree, tvb, start, length, &length, encoding);
             proto_tree_set_string(new_fi, stringval);
 
@@ -2800,7 +2800,7 @@ proto_tree_new_item(field_info *new_fi, proto_tree *tree,
             break;
 
         case FT_STRINGZPAD:
-            stringval = get_stringzpad_value(wmem_packet_scope(),
+            stringval = (const char *)get_stringzpad_value(wmem_packet_scope(),
                 tvb, start, length, &length, encoding);
             proto_tree_set_string(new_fi, stringval);
 
@@ -3343,7 +3343,7 @@ proto_tree_add_item_ret_int64(proto_tree *tree, int hfindex, tvbuff_t *tvb,
     }
     /* I believe it's ok if this is called with a NULL tree */
     if (encoding & (ENC_VARIANT_MASK)) {
-        tvb_get_varint(tvb, start, length, &value, encoding);
+        tvb_get_varint(tvb, start, length, (guint64 *)&value, encoding);
     }
     else {
         value = get_int64_value(tree, tvb, start, length, encoding);
@@ -3520,13 +3520,13 @@ proto_tree_add_item_ret_string_and_length(proto_tree *tree, int hfindex,
 
     new_fi = new_field_info(tree, hfinfo, tvb, start, *lenretval);
 
-    proto_tree_set_string(new_fi, value);
+    proto_tree_set_string(new_fi, (const char*)value);
 
     new_fi->flags |= (encoding & ENC_LITTLE_ENDIAN) ? FI_LITTLE_ENDIAN : FI_BIG_ENDIAN;
 
     pi = proto_tree_add_node(tree, new_fi);
 
-    detect_trailing_stray_characters(hfinfo->type, encoding, value, length, pi);
+    detect_trailing_stray_characters(hfinfo->type, encoding, (const char*)value, length, pi);
 
     return pi;
 }
@@ -3603,7 +3603,7 @@ proto_tree_add_item_ret_display_string_and_length(proto_tree *tree, int hfindex,
     case FT_STRINGZ:
     case FT_UINT_STRING:
     case FT_STRINGZPAD:
-        proto_tree_set_string(new_fi, value);
+        proto_tree_set_string(new_fi, (const char*)value);
         break;
 
     case FT_BYTES:
@@ -3627,7 +3627,7 @@ proto_tree_add_item_ret_display_string_and_length(proto_tree *tree, int hfindex,
     case FT_STRINGZ:
     case FT_UINT_STRING:
     case FT_STRINGZPAD:
-        detect_trailing_stray_characters(hfinfo->type, encoding, value, length, pi);
+        detect_trailing_stray_characters(hfinfo->type, encoding, (const char*)value, length, pi);
         break;
 
     case FT_BYTES:
@@ -3757,7 +3757,7 @@ proto_item *
 proto_tree_add_item(proto_tree *tree, int hfindex, tvbuff_t *tvb,
             const gint start, gint length, const guint encoding)
 {
-    register header_field_info *hfinfo;
+    header_field_info *hfinfo;
 
     PROTO_REGISTRAR_GET_NTH(hfindex, hfinfo);
     return proto_tree_add_item_new(tree, hfinfo, tvb, start, length, encoding);
@@ -3814,7 +3814,7 @@ proto_tree_add_item_ret_length(proto_tree *tree, int hfindex, tvbuff_t *tvb,
                    const gint start, gint length,
                    const guint encoding, gint *lenretval)
 {
-    register header_field_info *hfinfo;
+    header_field_info *hfinfo;
 
     PROTO_REGISTRAR_GET_NTH(hfindex, hfinfo);
     return proto_tree_add_item_new_ret_length(tree, hfinfo, tvb, start, length, encoding, lenretval);
