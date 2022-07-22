@@ -227,7 +227,7 @@ packet_cache_proto_handles(void)
 	g_assert(data_handle != NULL);
 
 	proto_malformed = proto_get_id_by_filter_name("_ws.malformed");
-	g_assert(proto_malformed != -1);
+	// g_assert(proto_malformed != -1);
 }
 
 /* List of routines that are called before we make a pass through a capture file

@@ -494,7 +494,7 @@ proto_init(GSList *register_all_plugin_protocols_list,
     hf_text_only = proto_register_field_init(&hfi_text_only, -1);
 
     /* Register the pseudo-protocols used for exceptions. */
-    register_show_exception();
+    // register_show_exception();
     register_type_length_mismatch();
     register_number_string_decoding_error();
     register_string_errors();
