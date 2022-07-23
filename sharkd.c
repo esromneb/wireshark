@@ -159,7 +159,7 @@ main(int argc, char *argv[])
     goto clean_exit;
   }
 
-  codecs_init();
+  // codecs_init();
 
   /* Load libwireshark settings from the current profile. */
   prefs_p = epan_load_settings();
