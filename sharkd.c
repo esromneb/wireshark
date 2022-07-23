@@ -788,13 +788,15 @@ sharkd_filter(const char *dftext, guint8 **result)
 const char *
 sharkd_get_user_comment(const frame_data *fd)
 {
-  return cap_file_provider_get_user_comment(&cfile.provider, fd);
+    return "";
+  // return cap_file_provider_get_user_comment(&cfile.provider, fd);
 }
+
 
 int
 sharkd_set_user_comment(frame_data *fd, const gchar *new_comment)
 {
-  cap_file_provider_set_user_comment(&cfile.provider, fd, new_comment);
+  // cap_file_provider_set_user_comment(&cfile.provider, fd, new_comment);
   return 0;
 }
 
