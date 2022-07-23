@@ -4,5 +4,5 @@
 
 echo Diff:
 
-diff test1_output_ideal.txt test1_output.txt
+diff test1_output_ideal.txt test1_output.txt; true
 
